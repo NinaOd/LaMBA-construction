@@ -18,16 +18,16 @@ set -euo pipefail
 #
 # Main_dir/
 # ├── labels_combined/                    (input: combined labelmaps in native space)
-# │   ├── Sub_A/
-# │   │   └── Sub_A_T2w-SR_annotation_combined.nii.gz
-# │   ├── Sub_B/
-# │   │   └── Sub_B_T2w-SR_annotation_combined.nii.gz
+# │   ├── sub-A/
+# │   │   └── sub-A_T2w-SR_annotation_combined.nii.gz
+# │   ├── sub-B/
+# │   │   └── sub-B_T2w-SR_annotation_combined.nii.gz
 # │   └── ...
 # ├── warps/                              (from register_syn_batch.py or register_rigid_batch.py)
-# │   ├── tpl_A_1Warp.nii.gz             (SyN mode only)
-# │   ├── tpl_A_0GenericAffine.mat
-# │   ├── tpl_B_1Warp.nii.gz
-# │   ├── tpl_B_0GenericAffine.mat
+# │   ├── tpl-A_1Warp.nii.gz             (SyN mode only)
+# │   ├── tpl-A_0GenericAffine.mat
+# │   ├── tpl-B_1Warp.nii.gz
+# │   ├── tpl-B_0GenericAffine.mat
 # │   └── ...
 # └── results/                            (will be created)
 #     ├── transformed/                    (combined labelmaps in template space)
@@ -37,9 +37,9 @@ set -euo pipefail
 #     └── priors_c3d/                     (c3d mean and STAPLE priors)
 #
 # REQUIRED INPUTS:
-# - Template: path to reference template (e.g., tpl_template0.nii.gz)
+# - Template: path to reference template (e.g., tpl-template0.nii.gz)
 # - Warp files: output of register_syn_batch.py (SyN) or register_rigid_batch.py (rigid)
-#   Naming convention: tpl_{NAME}_0GenericAffine.mat  and  tpl_{NAME}_1Warp.nii.gz
+#   Naming convention: tpl-{NAME}_0GenericAffine.mat  and  tpl-{NAME}_1Warp.nii.gz
 # - Combined labelmaps: one per subject, all labels merged into one NIfTI (integer 1-7)
 #
 # NOTE: Subjects used for priors do NOT need to be the same as those used
@@ -68,11 +68,11 @@ The script transforms the combined labelmap to template space first (preserving 
 boundaries), then splits into per-label binary masks, and finally computes priors.
 
 Required arguments:
-  -i, --input       Directory containing Sub_* subject folders, each holding a
+  -i, --input       Directory containing sub-* subject folders, each holding a
                     combined labelmap (*_T2w-SR_annotation_combined.nii.gz)
   -w, --warps       Directory containing warp files from register_syn_batch.py or
-                    register_rigid_batch.py (naming: tpl_{NAME}_0GenericAffine.mat)
-  -t, --template    Path to template image (e.g., tpl_template0.nii.gz)
+                    register_rigid_batch.py (naming: tpl-{NAME}_0GenericAffine.mat)
+  -t, --template    Path to template image (e.g., tpl-template0.nii.gz)
   -o, --output      Output directory (will be created if it doesn't exist)
 
 Optional arguments:
@@ -90,10 +90,10 @@ Example (rigid priors for nnUNet):
 
 Expected input structure:
   labels_combined/
-    ├── Sub_A/
-    │   └── Sub_A_T2w-SR_annotation_combined.nii.gz
-    ├── Sub_B/
-    │   └── Sub_B_T2w-SR_annotation_combined.nii.gz
+    ├── sub-A/
+    │   └── sub-A_T2w-SR_annotation_combined.nii.gz
+    ├── sub-B/
+    │   └── sub-B_T2w-SR_annotation_combined.nii.gz
     └── ...
 
 EOF
@@ -243,11 +243,11 @@ check_dir "$WARP_DIR"
 print_success "Input directories validated"
 
 # Find subjects
-SUBJECT_DIRS=($(find "$LABEL_BASE_DIR" -maxdepth 1 -name "Sub_*" -type d | sort))
+SUBJECT_DIRS=($(find "$LABEL_BASE_DIR" -maxdepth 1 -name "sub-*" -type d | sort))
 
 if [[ ${#SUBJECT_DIRS[@]} -eq 0 ]]; then
     print_error "No subject directories found in $LABEL_BASE_DIR"
-    print_error "Expected pattern: Sub_* (e.g., Sub_A, Sub_B, etc.)"
+    print_error "Expected pattern: sub-* (e.g., sub-A, sub-B, etc.)"
     exit 1
 fi
 
@@ -304,9 +304,9 @@ failed_subjects=0
 
 for subject_dir in "${SUBJECT_DIRS[@]}"; do
     subject=$(basename "$subject_dir")
-    # Derive tpl_ name: strip "Sub_" prefix, add "tpl_" prefix
-    # e.g. Sub_A → tpl_A, Sub_B → tpl_B
-    tpl_name="tpl_${subject#Sub_}"
+    # Derive tpl- name: strip "sub-" prefix, add "tpl-" prefix
+    # e.g. sub-A → tpl-A, sub-B → tpl-B
+    tpl_name="tpl-${subject#sub-}"
     echo ""
     echo "Processing: $subject (output: $tpl_name)"
 

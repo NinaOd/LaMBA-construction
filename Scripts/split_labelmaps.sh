@@ -8,8 +8,8 @@ OUTPUT_DIR="/warped_labels_split"
 LABELS=(1 2 3 4 5 6 7)
 
 # Loop through warped labelmap files in LABEL_DIR
-# Input naming: tpl_{NAME}_labelmap_combined_toTemplate.nii.gz
-for COMBINED in "$LABEL_DIR"/tpl_*_labelmap_combined_toTemplate.nii.gz; do
+# Input naming: tpl-{NAME}_labelmap_combined_toTemplate.nii.gz
+for COMBINED in "$LABEL_DIR"/tpl-*_labelmap_combined_toTemplate.nii.gz; do
 
     if [[ ! -f "$COMBINED" ]]; then
         echo "Warning: No warped labelmap files found in $LABEL_DIR"
@@ -17,17 +17,17 @@ for COMBINED in "$LABEL_DIR"/tpl_*_labelmap_combined_toTemplate.nii.gz; do
     fi
 
     filename=$(basename "$COMBINED")
-    # Extract NAME by stripping tpl_ prefix and _labelmap_combined_toTemplate.nii.gz suffix
-    NAME="${filename#tpl_}"
+    # Extract NAME by stripping tpl- prefix and _labelmap_combined_toTemplate.nii.gz suffix
+    NAME="${filename#tpl-}"
     NAME="${NAME%_labelmap_combined_toTemplate.nii.gz}"
 
-    TPL_PREFIX="tpl_${NAME}"
-    SUBJ_FOLDER="Sub_${NAME}"
+    TPL_PREFIX="tpl-${NAME}"
+    SUBJ_FOLDER="sub-${NAME}"
 
     echo "Processing $TPL_PREFIX..."
     echo "  Found: $filename"
 
-    # Create subject output folder Sub_{NAME}/
+    # Create subject output folder sub-{NAME}/
     SUBJ_OUT="$OUTPUT_DIR/$SUBJ_FOLDER"
     mkdir -p "$SUBJ_OUT"
 
@@ -54,8 +54,8 @@ echo "✓ Done! Per-label files saved to $OUTPUT_DIR"
 echo ""
 echo "Output structure:"
 echo "  /path/to/outputdir/"
-echo "    ├── Sub_{name}_label1_mask.nii.gz"
-echo "    ├── Sub_{name}_label1.nii.gz"
-echo "    ├── Sub_{name}_label2_mask.nii.gz"
+echo "    ├── sub-{name}_label1_mask.nii.gz"
+echo "    ├── sub-{name}_label1.nii.gz"
+echo "    ├── sub-{name}_label2_mask.nii.gz"
 echo "    ├── ..."
-echo "    └── Sub_{name}_combined_labelmap.nii.gz"
+echo "    └── sub-{name}_combined_labelmap.nii.gz"

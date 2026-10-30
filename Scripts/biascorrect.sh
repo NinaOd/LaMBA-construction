@@ -16,7 +16,7 @@ mkdir -p "$DIR_BC" "$DIR_BF"
 
 
 
-for f in "$DIR_BRAINS"/Sub_*_brain_T2.nii.gz; do
+for f in "$DIR_BRAINS"/sub-*_brain_T2.nii.gz; do
 
     id=$(basename "$f" _brain_T2.nii.gz)
 

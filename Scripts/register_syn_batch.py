@@ -5,7 +5,7 @@ from pathlib import Path
 import sys
 
 # Configuration
-TEMPLATE = "/tpl_template0.nii.gz"
+TEMPLATE = "/tpl-template0.nii.gz"
 INPUT_DIR = Path("/subjects")
 OUTPUT_DIR = Path("/fit_SYN")
 
@@ -57,7 +57,7 @@ for img_path in input_files:
     print("=" * 80)
     print(f"Processing: {img_path.name}")
     print(f"Subject: {subject}")
-    print(f"Output prefix: tpl_{subject}_")
+    print(f"Output prefix: tpl-{subject}_")
     print()
 
     # Build antsRegistration command matching antsMultivariateTemplateConstruction2.sh
@@ -93,7 +93,7 @@ for img_path in input_files:
         "-s", "3x2x1x0",
 
         # Output
-        "-o", f"[{OUTPUT_DIR}/tpl_{subject}_,{OUTPUT_DIR}/tpl_{subject}_warped.nii.gz]"
+        "-o", f"[{OUTPUT_DIR}/tpl-{subject}_,{OUTPUT_DIR}/tpl-{subject}_warped.nii.gz]"
     ]
 
     # Run command
@@ -122,7 +122,7 @@ print()
 print(f"Results saved in: {OUTPUT_DIR}")
 print()
 print("Output files for each subject:")
-print("  - tpl_{subject}_0GenericAffine.mat (rigid + affine transform)")
-print("  - tpl_{subject}_1Warp.nii.gz (forward warp)")
-print("  - tpl_{subject}_1InverseWarp.nii.gz (inverse warp)")
-print("  - tpl_{subject}_warped.nii.gz (registered image)")
+print("  - tpl-{subject}_0GenericAffine.mat (rigid + affine transform)")
+print("  - tpl-{subject}_1Warp.nii.gz (forward warp)")
+print("  - tpl-{subject}_1InverseWarp.nii.gz (inverse warp)")
+print("  - tpl-{subject}_warped.nii.gz (registered image)")

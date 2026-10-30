@@ -1,6 +1,6 @@
 
 # Batch processing script for process_labels.sh
-# Processes multiple subjects in Sub_A, Sub_B, etc. format
+# Processes multiple subjects in sub-A, sub-B, etc. format
 
 
 function logo { 
@@ -23,7 +23,7 @@ function Usage {
     echo " "
     echo "batch_process_labels.sh (1)"
     echo " "
-    echo "(1): main directory containing the 'subjects' subdirectory (Sub_A, Sub_B, etc.)"
+    echo "(1): main directory containing the 'subjects' subdirectory (sub-A, sub-B, etc.)"
     echo " "
     echo "Usage notes:"
     echo "- Input subject folders must be located in a 'subjects' subdirectory"
@@ -60,12 +60,12 @@ fi
 # Create output base directory
 mkdir -p "$COMBINED_DIR"
 
-# Find all subject directories (Sub_*)
-SUBJECT_DIRS=$(find "$SUBJECTS_DIR" -maxdepth 1 -type d -name "Sub_*" | sort)
+# Find all subject directories (sub-*)
+SUBJECT_DIRS=$(find "$SUBJECTS_DIR" -maxdepth 1 -type d -name "sub-*" | sort)
 
 if [ -z "$SUBJECT_DIRS" ]; then
     echo "Error: No subject directories found in $SUBJECTS_DIR"
-    echo "Looking for directories with pattern 'Sub_*'"
+    echo "Looking for directories with pattern 'sub-*'"
     exit 1
 fi
 

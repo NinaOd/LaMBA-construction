@@ -9,7 +9,7 @@
 START_TIME=$(date +%s)
 
 # Set paths
-TEMPLATE="/tpl_template0.nii.gz"
+TEMPLATE="/tpl-template0.nii.gz"
 LABEL_BASE_DIR="/labels"
 OUTPUT_DIR="/warped_labels"
 WARP_DIR="/warps"
@@ -45,11 +45,11 @@ echo ""
 mkdir -p "$OUTPUT_DIR"
 
 # Find all combined annotation files
-ANNOTATION_FILES=($(find "$LABEL_BASE_DIR" -name "Sub_*_T2w-SR_annotation_combined.nii.gz" -type f | sort))
+ANNOTATION_FILES=($(find "$LABEL_BASE_DIR" -name "sub-*_T2w-SR_annotation_combined.nii.gz" -type f | sort))
 
 if [[ ${#ANNOTATION_FILES[@]} -eq 0 ]]; then
     echo "Error: No combined annotation files found in $LABEL_BASE_DIR"
-    echo "Looking for files matching: Sub_*_T2w-SR_annotation_combined.nii.gz"
+    echo "Looking for files matching: sub-*_T2w-SR_annotation_combined.nii.gz"
     exit 1
 fi
 
@@ -76,8 +76,8 @@ for annotation_file in "${ANNOTATION_FILES[@]}"; do
     echo "  Input file: $filename"
     
     # Derive the name used by register_rigid_batch.py:
-    name_no_prefix="${subject_name#Sub_}"
-    affine_file="$WARP_DIR/tpl_${name_no_prefix}_0GenericAffine.mat"
+    name_no_prefix="${subject_name#sub-}"
+    affine_file="$WARP_DIR/tpl-${name_no_prefix}_0GenericAffine.mat"
 
     # Check if affine file exists
     if [[ ! -f "$affine_file" ]]; then
@@ -93,7 +93,7 @@ for annotation_file in "${ANNOTATION_FILES[@]}"; do
     echo "  ✓ Using affine (rigid): $(basename $affine_file)"
     
     # Define output file
-    output_file="$OUTPUT_DIR/tpl_${name_no_prefix}_labelmap_combined_toTemplate.nii.gz"
+    output_file="$OUTPUT_DIR/tpl-${name_no_prefix}_labelmap_combined_toTemplate.nii.gz"
     
     echo "  → Transforming combined annotation to template space (rigid only)..."
     

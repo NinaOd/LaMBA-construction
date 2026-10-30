@@ -9,7 +9,7 @@
 START_TIME=$(date +%s)
 
 # Set paths
-TEMPLATE="/tpl_template0.nii.gz"
+TEMPLATE="/tpl-template0.nii.gz"
 LABEL_BASE_DIR="/subjects_combined"
 OUTPUT_DIR="/result_combined"
 WARP_DIR="/warps"

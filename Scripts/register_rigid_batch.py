@@ -9,7 +9,7 @@ import sys
 
 # Configuration
 
-TEMPLATE = "/tpl_template0.nii.gz"
+TEMPLATE = "/tpl-template0.nii.gz"
 
 INPUT_DIR = Path("/subjects")
 
@@ -99,7 +99,7 @@ for img_path in input_files:
 
     print(f"Subject: {subject}")
 
-    print(f"Output prefix: tpl_{subject}_")
+    print(f"Output prefix: tpl-{subject}_")
 
     print()
 
@@ -135,7 +135,7 @@ for img_path in input_files:
 
         # Output
 
-        "-o", f"[{OUTPUT_DIR}/tpl_{subject}_,{OUTPUT_DIR}/tpl_{subject}_warped.nii.gz]"
+        "-o", f"[{OUTPUT_DIR}/tpl-{subject}_,{OUTPUT_DIR}/tpl-{subject}_warped.nii.gz]"
 
     ]
 
@@ -190,6 +190,6 @@ print()
 
 print("Output files for each subject:")
 
-print("  - tpl_{subject}_0GenericAffine.mat (rigid transform)")
+print("  - tpl-{subject}_0GenericAffine.mat (rigid transform)")
 
-print("  - tpl_{subject}_warped.nii.gz (registered image)")
+print("  - tpl-{subject}_warped.nii.gz (registered image)")
